@@ -1,3 +1,6 @@
+from networkx.generators import sudoku
+import random
+
 sudoku_board = [
     [5, 3, 4, 6, 7, 8, 9, 1, 2],
     [6, 7, 2, 1, 9, 5, 3, 4, 8],
@@ -83,7 +86,28 @@ def sudokusolver(board: list):
                 return result
         board[r][c] = 0
 
+def generateboard():
+    board=[]
+    for i in range(9):
+        block=[]
+        for j in range(9):
+            block.append(0)
+        board.append(block)
+    for i in range(30):
+        r = random.randint(0,8)
+        c = random.randint(0,8)
+        if board[r][c] == 0:
+            board[r][c] = random.randint(1,9)
+            if not sudokucheck(board):
+                board[r][c] = 0
+    if sudokucheck(board):
+        return board
+    else:
+        return generateboard()
 
-test = sudokusolver(sudoku_board2)
-print(*test, sep="\n")
+
+test3 = generateboard()
+print(*test3, sep="\n")
+# test = sudokusolver(test3)
+# print(*test, sep="\n")
 #print(sudokucheck(sudoku_board))
