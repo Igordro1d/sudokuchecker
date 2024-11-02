@@ -1,18 +1,31 @@
-# sudoku_board = [
-#     [5, 3, 4, 6, 7, 8, 9, 1, 2],
-#     [6, 7, 2, 1, 9, 5, 3, 4, 8],
-#     [1, 9, 8, 3, 4, 2, 5, 6, 7],
-#     [8, 5, 9, 7, 6, 1, 4, 2, 3],
-#     [4, 2, 6, 8, 5, 3, 7, 9, 1],
-#     [7, 1, 3, 9, 2, 4, 8, 5, 6],
-#     [9, 6, 1, 5, 3, 7, 2, 8, 4],
-#     [2, 8, 7, 4, 1, 9, 6, 3, 5],
-#     [3, 4, 5, 2, 8, 6, 1, 7, 9]
-# ]
+sudoku_board = [
+    [5, 3, 4, 6, 7, 8, 9, 1, 2],
+    [6, 7, 2, 1, 9, 5, 3, 4, 8],
+    [1, 9, 8, 3, 4, 2, 5, 6, 7],
+    [8, 5, 9, 7, 6, 1, 4, 2, 3],
+    [4, 2, 6, 8, 5, 3, 7, 9, 1],
+    [7, 1, 3, 9, 2, 4, 8, 5, 6],
+    [9, 6, 1, 5, 3, 7, 2, 8, 4],
+    [2, 8, 7, 4, 1, 9, 6, 3, 5],
+    [3, 4, 5, 2, 8, 6, 1, 7, 9]
+]
+sudoku_board2 = [
+    [0, 3, 4, 6, 7, 8, 9, 1, 2],
+    [6, 0, 2, 1, 9, 5, 3, 4, 8],
+    [1, 9, 0, 3, 4, 2, 5, 6, 7],
+    [8, 5, 9, 0, 6, 1, 4, 2, 3],
+    [4, 2, 6, 8, 0, 3, 7, 9, 1],
+    [7, 1, 3, 9, 2, 0, 8, 5, 6],
+    [9, 6, 1, 5, 3, 7, 0, 8, 4],
+    [2, 8, 7, 4, 1, 9, 6, 3, 5],
+    [3, 4, 5, 2, 8, 6, 1, 7, 9]
+]
 
 def rowchecker(row: list):
-    if len(row) == len(set(row)):
+    filter_row = [num for num in row if num !=0]
+    if len(filter_row) == len(set(filter_row)):
         return True
+
 def colchecker(board: list):
     answer = []
     for r in range(len(board)):
@@ -33,7 +46,11 @@ def divideblocks(board: list):
                     block.append(board[3*r + i][3*c + j])
             answer.append(block)
     return answer
+
 def sudokucheck(board: list):
+    # for r in board:
+    #     if 0 in r:
+    #         return False
     #checks each item in board to see if true
     if not all(rowchecker(r) for r in board):
         return False
@@ -43,5 +60,30 @@ def sudokucheck(board: list):
         return False
     return True
 
+def emptycell(board: list):
+    emptycells = []
+    for r in range(len(board)):
+        for c in range(len(board)):
+            if board[r][c] == 0:
+                emptycells.append([r, c])
+    return emptycells
 
-##print(sudokucheck(sudoku_board))
+def sudokusolver(board: list):
+    emptycells = emptycell(board)
+    if len(emptycells) == 0:
+        return board
+    cell = emptycells[0]
+    r = cell[0]
+    c = cell[1]
+    for num in range(1,10):
+        board[r][c] = num
+        if sudokucheck(board):
+            result = sudokusolver(board)
+            if result is not None:
+                return result
+        board[r][c] = 0
+
+
+test = sudokusolver(sudoku_board2)
+print(*test, sep="\n")
+#print(sudokucheck(sudoku_board))
