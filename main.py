@@ -86,28 +86,61 @@ def sudokusolver(board: list):
                 return result
         board[r][c] = 0
 
-def generateboard():
-    board=[]
+def makeemptyboard():
+    board = []
     for i in range(9):
-        block=[]
+        block = []
         for j in range(9):
             block.append(0)
         board.append(block)
+    return board
+
+def generateboard(board: list):
+    emptycells = emptycell(board)
+    if len(emptycells) == 0:
+        return board
+    cell = emptycells[0]
+    r = cell[0]
+    c = cell[1]
+    num = list(range(1,10))
+    random.shuffle(num)
+    for i in num:
+        board[r][c] = i
+        if sudokucheck(board):
+            result = generateboard(board)
+            if result is not None:
+                return result
+        board[r][c] = 0
+
+def puzzlegenerator(board: list):
     for i in range(30):
         r = random.randint(0,8)
         c = random.randint(0,8)
-        if board[r][c] == 0:
-            board[r][c] = random.randint(1,9)
-            if not sudokucheck(board):
-                board[r][c] = 0
-    if sudokucheck(board):
-        return board
-    else:
-        return generateboard()
+        board[r][c] = 0
+    return board
+
+t1 = makeemptyboard()
+t2 = generateboard(t1)
+t3 = puzzlegenerator(t2)
+print(*t2, sep="\n")
 
 
-test3 = generateboard()
-print(*test3, sep="\n")
-# test = sudokusolver(test3)
-# print(*test, sep="\n")
-#print(sudokucheck(sudoku_board))
+# def generateboard():
+#     board=[]
+#     for i in range(9):
+#         block=[]
+#         for j in range(9):
+#             block.append(0)
+#         board.append(block)
+#     for i in range(30):
+#         r = random.randint(0,8)
+#         c = random.randint(0,8)
+#         if board[r][c] == 0:
+#             board[r][c] = random.randint(1,9)
+#             if not sudokucheck(board):
+#                 board[r][c] = 0
+#     if sudokucheck(board):
+#         return board
+#     else:
+#         return generateboard()
+
