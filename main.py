@@ -38,7 +38,6 @@ def colchecker(board: list):
         answer.append(block)
     return answer
 
-
 def divideblocks(board: list):
     answer = []
     for r in range(3):
@@ -112,8 +111,15 @@ def generateboard(board: list):
                 return result
         board[r][c] = 0
 
-def puzzlegenerator(board: list):
-    for i in range(30):
+def puzzlegenerator(board: list, difficulty):
+    x=0
+    if difficulty.lower() == 'easy':
+        x = 20
+    elif difficulty.lower() == 'medium':
+        x = 35
+    elif difficulty.lower() == 'hard':
+        x = 40
+    for i in range(x):
         r = random.randint(0,8)
         c = random.randint(0,8)
         board[r][c] = 0
